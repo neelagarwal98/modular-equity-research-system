@@ -1,5 +1,5 @@
 """
-Synthesis Agent - Generates comprehensive equity research reports
+Synthesis Module - Generates comprehensive equity research reports
 """
 import sys
 import os
@@ -16,7 +16,7 @@ from config import LLM_MODEL, MAX_TOKENS
 from utils.logger import logger
 from utils.embeddings import VectorStoreManager
 
-class SynthesisAgent:
+class SynthesisModule:
     """
     Synthesizes research into comprehensive reports with:
     - Executive summary
@@ -40,8 +40,8 @@ class SynthesisAgent:
             3. DETAILED ANALYSIS (2-3 paragraphs)
             4. IMPORTANT CONSIDERATIONS (risks, limitations)
             
-            Use professional financial language. Be specific and data-driven when possible.
-            Cite sources inline using [Source: URL] format.
+            Use professional financial language. Be specific and data-driven when possible (provide numbers).
+            Cite sources inline using [Source: URL] format with clickable complete URLs.
             """),
             ("user", """Company: {company_name}
 Research Intent: {research_intent}
@@ -65,7 +65,7 @@ Generate a comprehensive research report based on the available information.""")
         """Generate comprehensive research report"""
         
         logger.log_activity(
-            "Synthesis Agent",
+            "Synthesis Module",
             "Generating report",
             "info",
             f"Processing {len(documents)} documents"
@@ -118,7 +118,7 @@ Generate a comprehensive research report based on the available information.""")
             }
             
             logger.log_activity(
-                "Synthesis Agent",
+                "Synthesis Module",
                 "Report generated successfully",
                 "success",
                 f"Confidence: {report['confidence_score']:.1f}% | Sources: {len(sources_list)}"
@@ -128,7 +128,7 @@ Generate a comprehensive research report based on the available information.""")
             
         except Exception as e:
             logger.log_activity(
-                "Synthesis Agent",
+                "Synthesis Module",
                 "Report generation failed",
                 "error",
                 str(e)
@@ -286,7 +286,7 @@ Please try again or contact support if the issue persists.
             
         except Exception as e:
             logger.log_activity(
-                "Synthesis Agent",
+                "Synthesis Module",
                 "Question answering failed",
                 "error",
                 str(e)

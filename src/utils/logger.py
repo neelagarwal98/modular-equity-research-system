@@ -1,23 +1,23 @@
 """
-Activity Logger for tracking agent operations
+Activity Logger for tracking module operations
 """
 import streamlit as st
 from datetime import datetime
 from typing import List, Dict
 import json
 
-class AgentLogger:
-    """Tracks and displays agent activities in real-time"""
+class ModuleLogger:
+    """Tracks and displays Module activities in real-time"""
     
     def __init__(self):
         if 'activity_log' not in st.session_state:
             st.session_state.activity_log = []
     
-    def log_activity(self, agent_name: str, action: str, status: str = "info", details: str = ""):
-        """Log an agent activity"""
+    def log_activity(self, module_name: str, action: str, status: str = "info", details: str = ""):
+        """Log an module activity"""
         log_entry = {
             "timestamp": datetime.now().strftime("%H:%M:%S"),
-            "agent": agent_name,
+            "module": module_name,
             "action": action,
             "status": status,  # info, success, warning, error
             "details": details
@@ -51,9 +51,9 @@ class AgentLogger:
                 "error": "❌"
             }.get(log["status"], "ℹ️")
             
-            container.text(f"{status_emoji} [{log['timestamp']}] {log['agent']}: {log['action']}")
+            container.text(f"{status_emoji} [{log['timestamp']}] {log['module']}: {log['action']}")
             if log.get("details"):
                 container.caption(f"   └─ {log['details']}")
 
 # Global logger instance
-logger = AgentLogger()
+logger = ModuleLogger()

@@ -1,5 +1,5 @@
 """
-Multi-Agent Equity Research System
+Modular Equity Research System
 Streamlit Dashboard
 """
 import streamlit as st
@@ -9,16 +9,16 @@ import os
 # Add src to path
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'src'))
 
-from agents.query_analyzer import QueryAnalyzerAgent
-from agents.research_agent import ResearchAgent
-from agents.validation_agent import ValidationAgent
-from agents.synthesis_agent import SynthesisAgent
+from modules.query_analyzer import QueryAnalyzer
+from modules.research_module import ResearchModule
+from modules.validation_module import ValidationModule
+from modules.synthesis_module import SynthesisModule
 from utils.logger import logger
 from config import OPENAI_API_KEY
 
 # Page configuration
 st.set_page_config(
-    page_title="Multi-Agent Equity Research System",
+    page_title="Modular Equity Research System",
     page_icon="📊",
     layout="wide",
     initial_sidebar_state="expanded"
@@ -39,7 +39,7 @@ st.markdown("""
         color: #666;
         margin-bottom: 2rem;
     }
-    .agent-status {
+    .module-status {
         padding: 1rem;
         border-radius: 0.5rem;
         margin: 0.5rem 0;
@@ -83,13 +83,13 @@ def check_api_key():
 
 def display_header():
     """Display application header"""
-    st.markdown('<p class="main-header">📊 Multi-Agent Equity Research System</p>', unsafe_allow_html=True)
-    st.markdown('<p class="sub-header">Autonomous AI agents working together to analyze financial markets</p>', unsafe_allow_html=True)
+    st.markdown('<p class="main-header">📊 Modular Equity Research System</p>', unsafe_allow_html=True)
+    st.markdown('<p class="sub-header">AI modules working in coordination to analyze financial markets</p>', unsafe_allow_html=True)
     st.markdown("---")
 
-def display_agent_info():
-    """Display information about the agents"""
-    with st.expander("🤖 About the Multi-Agent System", expanded=False):
+def display_module_info():
+    """Display information about the modules"""
+    with st.expander("🤖 About the Modular System", expanded=False):
         col1, col2, col3, col4 = st.columns(4)
         
         with col1:
@@ -97,27 +97,27 @@ def display_agent_info():
             st.write("Analyzes research queries and extracts key information")
         
         with col2:
-            st.markdown("### 📰 Research Agent")
+            st.markdown("### 📰 Research Module")
             st.write("Discovers and loads relevant sources autonomously")
         
         with col3:
-            st.markdown("### ✅ Validation Agent")
+            st.markdown("### ✅ Validation Module")
             st.write("Validates sources and calculates confidence scores")
         
         with col4:
-            st.markdown("### 📝 Synthesis Agent")
+            st.markdown("### 📝 Synthesis Module")
             st.write("Generates comprehensive research reports")
 
 def run_research(query: str, mode: str, user_urls: list = None):
-    """Execute the multi-agent research pipeline"""
+    """Execute the multi modular research pipeline"""
     logger.clear_logs()
     
     try:
-        # Initialize agents
-        query_agent = QueryAnalyzerAgent()
-        research_agent = ResearchAgent()
-        validation_agent = ValidationAgent()
-        synthesis_agent = SynthesisAgent()
+        # Initialize modules
+        query_analyzer = QueryAnalyzer()
+        research_module = ResearchModule()
+        validation_module = ValidationModule()
+        synthesis_module = SynthesisModule()
         
         # Progress tracking
         progress_bar = st.progress(0)
@@ -126,7 +126,7 @@ def run_research(query: str, mode: str, user_urls: list = None):
         # Step 1: Query Analysis (20%)
         status_text.text("🔍 Analyzing your query...")
         progress_bar.progress(20)
-        query_analysis = query_agent.analyze(query)
+        query_analysis = query_analyzer.analyze(query)
         st.session_state.query_analysis = query_analysis
         
         # Display analysis
@@ -146,9 +146,9 @@ def run_research(query: str, mode: str, user_urls: list = None):
         progress_bar.progress(40)
         
         if mode == "autonomous" or not user_urls:
-            documents = research_agent.search_and_load(query_analysis)
+            documents = research_module.search_and_load(query_analysis)
         else:
-            documents = research_agent.load_from_user_urls(user_urls)
+            documents = research_module.load_from_user_urls(user_urls)
         
         if not documents:
             st.error("❌ No sources could be loaded. Please try different URLs or query.")
@@ -159,7 +159,7 @@ def run_research(query: str, mode: str, user_urls: list = None):
         # Step 3: Validation (60%)
         status_text.text("✅ Validating sources and checking credibility...")
         progress_bar.progress(60)
-        validation_report = validation_agent.validate_documents(documents)
+        validation_report = validation_module.validate_documents(documents)
         
         # Display validation
         with st.expander("🔒 Validation Report", expanded=True):
@@ -178,7 +178,7 @@ def run_research(query: str, mode: str, user_urls: list = None):
         # Step 4: Synthesis (80%)
         status_text.text("📝 Generating comprehensive report...")
         progress_bar.progress(80)
-        report = synthesis_agent.generate_report(
+        report = synthesis_module.generate_report(
             query_analysis,
             documents,
             validation_report,
@@ -235,7 +235,7 @@ def display_report(report: dict):
         css_class = "confidence-low"
         indicator = "🔴 Low Confidence"
     
-    st.markdown(f'<div class="agent-status {css_class}">{indicator}</div>', unsafe_allow_html=True)
+    st.markdown(f'<div class="module-status {css_class}">{indicator}</div>', unsafe_allow_html=True)
     
     # Report content
     st.markdown("### 📄 Report Content")
@@ -330,7 +330,7 @@ def main():
     initialize_session_state()
     check_api_key()
     display_header()
-    display_agent_info()
+    display_module_info()
     
     # Sidebar
     with st.sidebar:
@@ -341,7 +341,7 @@ def main():
             "Research Mode",
             ["autonomous", "manual"],
             format_func=lambda x: "🤖 Autonomous (AI finds sources)" if x == "autonomous" else "📝 Manual (Provide URLs)",
-            help="Autonomous mode: AI agents discover sources automatically\nManual mode: Provide your own URLs"
+            help="Autonomous mode: AI modules discover sources automatically\nManual mode: Provide your own URLs"
         )
         
         user_urls = []

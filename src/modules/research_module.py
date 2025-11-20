@@ -1,5 +1,5 @@
 """
-Research Agent - Finds and loads relevant sources for equity research
+Research Module - Finds and loads relevant sources for equity research
 """
 import sys
 import os
@@ -16,7 +16,7 @@ import time
 from config import MAX_SOURCES, PRIORITY_DOMAINS, URL_LOAD_TIMEOUT
 from utils.logger import logger
 
-class ResearchAgent:
+class ResearchModule:
     """
     Finds relevant sources for equity research by:
     - Searching financial news sites
@@ -27,13 +27,13 @@ class ResearchAgent:
     def __init__(self):
         self.session = requests.Session()
         self.session.headers.update({
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+            'User-Module': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
         })
     
     def discover_sources(self, search_queries: List[str], company_name: str) -> List[str]:
         """Discover relevant URLs based on search queries"""
         logger.log_activity(
-            "Research Agent",
+            "Research Module",
             "Discovering sources",
             "info",
             f"Searching for: {company_name}"
@@ -52,7 +52,7 @@ class ResearchAgent:
         unique_urls = list(dict.fromkeys(discovered_urls))[:MAX_SOURCES]
         
         logger.log_activity(
-            "Research Agent",
+            "Research Module",
             f"Found {len(unique_urls)} sources",
             "success",
             f"URLs ready for analysis"
@@ -86,7 +86,7 @@ class ResearchAgent:
     def load_documents(self, urls: List[str]) -> List[Document]:
         """Load content from discovered URLs"""
         logger.log_activity(
-            "Research Agent",
+            "Research Module",
             "Loading documents",
             "info",
             f"Processing {len(urls)} URLs"
@@ -98,7 +98,7 @@ class ResearchAgent:
         for idx, url in enumerate(urls):
             try:
                 logger.log_activity(
-                    "Research Agent",
+                    "Research Module",
                     f"Loading source {idx + 1}/{len(urls)}",
                     "info",
                     url
@@ -108,7 +108,7 @@ class ResearchAgent:
                 loader = UnstructuredURLLoader(
                     urls=[url],
                     continue_on_failure=True,
-                    headers={"User-Agent": "Mozilla/5.0"}
+                    headers={"User-Module": "Mozilla/5.0"}
                 )
                 
                 docs = loader.load()
@@ -117,24 +117,24 @@ class ResearchAgent:
                     documents.extend(docs)
                     successful_loads += 1
                     logger.log_activity(
-                        "Research Agent",
+                        "Research Module",
                         f"Successfully loaded",
                         "success",
                         f"{len(docs[0].page_content[:100])}... chars"
                     )
                 else:
                     logger.log_activity(
-                        "Research Agent",
+                        "Research Module",
                         "No content extracted",
                         "warning",
                         url
                     )
                 
-                time.sleep(1)  # Respectful crawling
+                time.sleep(1)  
                 
             except Exception as e:
                 logger.log_activity(
-                    "Research Agent",
+                    "Research Module",
                     "Failed to load source",
                     "warning",
                     f"{url}: {str(e)}"
@@ -142,7 +142,7 @@ class ResearchAgent:
                 continue
         
         logger.log_activity(
-            "Research Agent",
+            "Research Module",
             f"Document loading complete",
             "success",
             f"Loaded {successful_loads}/{len(urls)} sources successfully"
@@ -153,7 +153,7 @@ class ResearchAgent:
     def load_from_user_urls(self, urls: List[str]) -> List[Document]:
         """Load documents from user-provided URLs (original functionality)"""
         logger.log_activity(
-            "Research Agent",
+            "Research Module",
             "Loading user-provided URLs",
             "info",
             f"{len(urls)} URLs provided"
@@ -164,7 +164,7 @@ class ResearchAgent:
         
         if not valid_urls:
             logger.log_activity(
-                "Research Agent",
+                "Research Module",
                 "No valid URLs provided",
                 "warning",
                 "Please enter at least one URL"
@@ -184,7 +184,7 @@ class ResearchAgent:
             
             if not urls:
                 logger.log_activity(
-                    "Research Agent",
+                    "Research Module",
                     "No sources discovered",
                     "error",
                     "Unable to find relevant sources"
@@ -198,7 +198,7 @@ class ResearchAgent:
             
         except Exception as e:
             logger.log_activity(
-                "Research Agent",
+                "Research Module",
                 "Research failed",
                 "error",
                 str(e)

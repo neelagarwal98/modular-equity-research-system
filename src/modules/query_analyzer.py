@@ -1,5 +1,5 @@
 """
-Query Analyzer Agent - Analyzes and structures user research queries
+Query Analyzer - Analyzes and structures user research queries
 """
 import sys
 import os
@@ -13,7 +13,7 @@ import re
 from config import LLM_MODEL, LLM_TEMPERATURE
 from utils.logger import logger
 
-class QueryAnalyzerAgent:
+class QueryAnalyzer:
     """
     Analyzes user queries to extract:
     - Company/ticker information
@@ -25,7 +25,7 @@ class QueryAnalyzerAgent:
     def __init__(self):
         self.llm = ChatOpenAI(model=LLM_MODEL, temperature=LLM_TEMPERATURE)
         self.prompt = ChatPromptTemplate.from_messages([
-            ("system", """You are an expert financial analyst specializing in equity research.
+            ("system", """Act as an expert financial analyst specializing in equity research.
             Analyze the user's research query and extract structured information.
             
             Return a JSON object with:
@@ -34,7 +34,7 @@ class QueryAnalyzerAgent:
             - research_intent: Type of research (news, valuation, competition, earnings, outlook, etc.)
             - key_topics: List of important topics to investigate
             - time_frame: Time period of interest (recent, quarterly, annual, etc.)
-            - search_queries: 3-5 specific search queries to find relevant information
+            - search_queries: 7-8 specific search queries to find relevant information
             
             Example output:
             {{

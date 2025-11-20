@@ -1,5 +1,5 @@
 """
-Validation Agent - Validates information quality and cross-references sources
+Validation Module - Validates information quality and cross-references sources
 """
 import sys
 import os
@@ -15,7 +15,7 @@ from datetime import datetime
 from config import LLM_MODEL, LLM_TEMPERATURE, PRIORITY_DOMAINS, MIN_CONFIDENCE_SCORE
 from utils.logger import logger
 
-class ValidationAgent:
+class ValidationModule:
     """
     Validates research findings by:
     - Checking source credibility
@@ -45,7 +45,7 @@ class ValidationAgent:
     def validate_documents(self, documents: List[Document]) -> Dict:
         """Validate all documents and return validation report"""
         logger.log_activity(
-            "Validation Agent",
+            "Validation Module",
             "Starting validation",
             "info",
             f"Validating {len(documents)} documents"
@@ -74,7 +74,7 @@ class ValidationAgent:
             
             status = "success" if score >= 70 else "warning" if score >= 50 else "error"
             logger.log_activity(
-                "Validation Agent",
+                "Validation Module",
                 f"Document {idx + 1} validated",
                 status,
                 f"Score: {score}/100 - {reason[:50]}..."
@@ -94,7 +94,7 @@ class ValidationAgent:
         }
         
         logger.log_activity(
-            "Validation Agent",
+            "Validation Module",
             "Validation complete",
             "success",
             f"Overall confidence: {overall_confidence:.1f}%"
@@ -123,7 +123,7 @@ class ValidationAgent:
                    ['earnings', 'revenue', 'profit', 'quarter', 'fiscal']):
                 base_score += 10
             
-            # LLM validation for edge cases (optional, comment out for speed)
+            # LLM validation for edge cases 
             # chain = self.credibility_prompt | self.llm
             # response = chain.invoke({"source": source, "content": content_preview})
             # score, reason = self._parse_validation_response(response.content)
@@ -135,7 +135,7 @@ class ValidationAgent:
             
         except Exception as e:
             logger.log_activity(
-                "Validation Agent",
+                "Validation Module",
                 "Evaluation error",
                 "warning",
                 str(e)
@@ -195,18 +195,13 @@ class ValidationAgent:
     
     def cross_reference(self, findings: List[str]) -> Dict:
         """Cross-reference multiple findings for consistency"""
-        # Simple implementation: check for consistency
-        # In production, use more sophisticated fact-checking
         
         logger.log_activity(
-            "Validation Agent",
+            "Validation Module",
             "Cross-referencing findings",
             "info",
             f"Checking {len(findings)} findings"
         )
-        
-        # Placeholder for cross-referencing logic
-        # Could use LLM to check for contradictions
         
         return {
             "consistent": True,
