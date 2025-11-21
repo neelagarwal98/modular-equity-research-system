@@ -47,7 +47,7 @@ The system follows a **modular pipeline architecture** where specialized compone
 - **OpenAI Embeddings** - Text vectorization
 
 #### **Data Sources**
-- **Google Serper API** - Real-time web search
+- **Serper API** - Real-time web search
 - **LangChain Document Loaders** - Web scraping and parsing
 
 #### **Additional Libraries**
@@ -99,7 +99,7 @@ Processes natural language queries to extract structured information:
 
 #### **2. Research Module** (`research_module.py`)
 Discovers and loads relevant financial content:
-- Uses Google SERP API for dynamic source discovery
+- Uses SERPER API for dynamic source discovery
 - Filters for trusted financial domains (Reuters, Bloomberg, CNBC, etc.)
 - Loads and processes document content
 - Falls back to curated sources if API unavailable
@@ -191,13 +191,6 @@ SERPER_API_KEY=your-serper-api-key-here
 **Where to get API keys:**
 - **OpenAI**: https://platform.openai.com/api-keys
 - **Serper**: https://serper.dev (100 free searches/month)
-
-#### 5. Verify Installation
-
-```bash
-# Test that all packages are installed
-python -c "from langchain_openai import ChatOpenAI; from langchain_community.utilities import GoogleSerperAPIWrapper; print('✅ All packages installed successfully!')"
-```
 
 ---
 
@@ -428,5 +421,5 @@ If you find this project helpful, please consider giving it a star! ⭐
 
 ---
 
-**Built using Python, LangChain, OpenAI GPT 3.5 turbo, Google SERP API, FAISS, RAG and Streamlit**
+**Built using Python, LangChain, OpenAI GPT 3.5 turbo, SERPER API, FAISS, RAG and Streamlit**
 
