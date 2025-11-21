@@ -1,6 +1,3 @@
-"""
-Synthesis Module - Generates comprehensive equity research reports
-"""
 import sys
 import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -147,7 +144,6 @@ class SynthesisModule:
             source = doc.metadata.get("source", "Unknown")
             content = doc.page_content[:400]  # First 400 chars
             
-            # Include FULL URL in context so LLM can cite it
             context_parts.append(
                 f"[SOURCE URL: {source}]\n{content}\n"
                 f"CITE THIS SOURCE AS: [Source: {source}]({source})\n"

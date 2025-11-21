@@ -1,6 +1,3 @@
-"""
-Activity Logger for tracking module operations
-"""
 import streamlit as st
 from datetime import datetime
 from typing import List, Dict

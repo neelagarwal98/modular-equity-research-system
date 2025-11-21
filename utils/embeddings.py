@@ -1,6 +1,3 @@
-"""
-Embeddings and Vector Store utilities
-"""
 import os
 from typing import List
 from langchain_openai import OpenAIEmbeddings

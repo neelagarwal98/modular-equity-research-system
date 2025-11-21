@@ -1,12 +1,7 @@
-"""
-Modular Equity Research System
-Streamlit Dashboard
-"""
 import streamlit as st
 import sys
 import os
 
-# Add src to path
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'src'))
 
 from modules.query_analyzer import QueryAnalyzer

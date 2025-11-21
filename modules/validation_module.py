@@ -1,6 +1,3 @@
-"""
-Validation Module - Validates information quality and cross-references sources
-"""
 import sys
 import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -123,7 +120,7 @@ class ValidationModule:
                    ['earnings', 'revenue', 'profit', 'quarter', 'fiscal']):
                 base_score += 10
             
-            # LLM validation for edge cases 
+            # validation for edge cases 
             # chain = self.credibility_prompt | self.llm
             # response = chain.invoke({"source": source, "content": content_preview})
             # score, reason = self._parse_validation_response(response.content)
