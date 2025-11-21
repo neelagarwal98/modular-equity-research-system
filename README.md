@@ -21,7 +21,7 @@ The **Modular Equity Research System** is a prototype application that automates
 - **📝 RAG-Powered Synthesis**: Generates comprehensive reports using vector-based semantic search and LLM synthesis
 - **📊 Real-time Activity Logging**: Transparent pipeline execution with detailed activity tracking
 
-![image.png](attachment:image.png)
+![screencapture.png](images/screencapture.png)
 
 ## 🏗️ Architecture
 
@@ -29,7 +29,7 @@ The **Modular Equity Research System** is a prototype application that automates
 
 The system follows a **modular pipeline architecture** where specialized components work in coordination to process research queries:
 
-![workflow.jpg](attachment:workflow.jpg)
+![workflow.jpg](images/workflow.jpg)
 
 ### Technology Stack
 
