@@ -43,7 +43,7 @@ class ModuleLogger:
             container.info("No activities yet. Start a research query!")
             return
         
-        for log in reversed(logs[-10:]):  # Show last 10 activities
+        for log in reversed(logs):  
             status_emoji = {
                 "info": "ℹ️",
                 "success": "✅",

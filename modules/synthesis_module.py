@@ -41,18 +41,22 @@ class SynthesisModule:
             4. IMPORTANT CONSIDERATIONS (risks, limitations)
             
             Use professional financial language. Be specific and data-driven when possible (provide numbers).
-            Cite sources inline using [Source: URL] format with clickable complete URLs.
+            CRITICAL: When citing sources, you MUST use the COMPLETE URL in markdown link format:
+            - Correct: [Source: https://www.cnbc.com/2024/11/20/nvidia-earnings.html](https://www.cnbc.com/2024/11/20/nvidia-earnings.html)
+            - Wrong: [Source 1]
+            
+            Every claim should cite its source with the full URL as a clickable link.
             """),
             ("user", """Company: {company_name}
-Research Intent: {research_intent}
-Key Topics: {key_topics}
+            Research Intent: {research_intent}
+            Key Topics: {key_topics}
 
-Context from sources:
-{context}
+            Context from sources:
+            {context}
 
-Question: {question}
+            Question: {question}
 
-Generate a comprehensive research report based on the available information.""")
+            Generate a comprehensive research report based on the available information.""")
         ])
     
     def generate_report(
@@ -136,25 +140,29 @@ Generate a comprehensive research report based on the available information.""")
             return self._generate_error_report(user_question, str(e))
     
     def _format_context(self, documents: List[Document]) -> str:
-        """Format documents into context string"""
+        """Format documents into context string with FULL URLs"""
         context_parts = []
         
         for idx, doc in enumerate(documents[:5]):  # Top 5 most relevant
             source = doc.metadata.get("source", "Unknown")
             content = doc.page_content[:400]  # First 400 chars
-            context_parts.append(f"[Source {idx + 1}: {source}]\n{content}\n")
+            
+            # Include FULL URL in context so LLM can cite it
+            context_parts.append(
+                f"[SOURCE URL: {source}]\n{content}\n"
+                f"CITE THIS SOURCE AS: [Source: {source}]({source})\n"
+            )
         
         return "\n---\n".join(context_parts)
     
     def _extract_sources(self, documents: List[Document], validation_report: Dict = None) -> List[Dict]:
         """
-        Extract and format source information properly
-        FIXED VERSION - includes credibility scores and proper formatting
+        Extract sources with FULL URLs (not just domain names)
         """
         sources = []
         seen_sources = set()
         
-        # Get validation scores if available
+        # Get validation scores
         doc_scores = {}
         if validation_report:
             for score_info in validation_report.get("document_scores", []):
@@ -168,14 +176,28 @@ Generate a comprehensive research report based on the available information.""")
             source_url = doc.metadata.get("source", f"Unknown Source {idx + 1}")
             
             if source_url not in seen_sources:
-                # Get domain name for better display
+                # Extract article title from URL or use URL itself
                 try:
                     from urllib.parse import urlparse
                     parsed = urlparse(source_url)
-                    domain = parsed.netloc or parsed.path.split('/')[0]
-                    title = f"Source from {domain}" if domain else source_url
+                    
+                    # Get the path part (article name)
+                    path_parts = parsed.path.strip('/').split('/')
+                    if path_parts and len(path_parts) > 0:
+                        # Use last part of path as title (article slug)
+                        article_name = path_parts[-1].replace('-', ' ').replace('_', ' ')
+                        if len(article_name) > 50:
+                            article_name = article_name[:50] + "..."
+                        title = f"{parsed.netloc}: {article_name}"
+                    else:
+                        title = parsed.netloc
+                    
+                    # If title is too generic, just use the domain
+                    if not article_name or len(article_name) < 5:
+                        title = parsed.netloc
+                        
                 except:
-                    title = source_url
+                    title = source_url[:60] + "..." if len(source_url) > 60 else source_url
                 
                 # Get validation info
                 validation_info = doc_scores.get(source_url, {})
@@ -183,12 +205,11 @@ Generate a comprehensive research report based on the available information.""")
                 is_trusted = validation_info.get("is_trusted", False)
                 
                 source_dict = {
-                    "url": source_url,
+                    "url": source_url,  # FULL URL, not just domain
                     "title": title,
                     "index": len(sources) + 1
                 }
                 
-                # Add credibility if available
                 if credibility != "N/A":
                     source_dict["credibility_score"] = credibility
                     source_dict["is_trusted"] = is_trusted

@@ -29,5 +29,5 @@ typing-extensions>=4.9.0
 pydantic>=2.0.0
 pydantic-settings>=2.0.0
 
-# SerpAPI for web search
-# google-search-results==2.4.2
+# SerperAPI for web search
+google-search-results==2.4.2

@@ -27,41 +27,395 @@ st.set_page_config(
 # Custom CSS
 st.markdown("""
 <style>
+    /* ===== MAIN CONTAINER ===== */
+    .stApp {
+        background-color: #0d1117;
+        color: #e6edf3;
+    }
+    
+    /* ===== HEADERS - High Contrast ===== */
     .main-header {
         font-size: 2.5rem;
         font-weight: bold;
-        color: #1f77b4;
+        color: #ffffff;  /* Pure white for main header */
         text-align: center;
         margin-bottom: 0.5rem;
+        text-shadow: 0 0 10px rgba(88, 166, 255, 0.3);
     }
+    
     .sub-header {
         text-align: center;
-        color: #666;
+        color: #c9d1d9;  /* Lighter gray for better readability */
         margin-bottom: 2rem;
+        font-size: 1.1rem;
     }
+    
+    /* ===== MODULE STATUS BOXES ===== */
     .module-status {
         padding: 1rem;
         border-radius: 0.5rem;
         margin: 0.5rem 0;
+        background-color: #21262d;
+        border: 1px solid #30363d;
     }
+    
     .confidence-high {
-        background-color: #d4edda;
-        border-left: 4px solid #28a745;
+        background-color: #1a472a;  /* Darker green background */
+        border-left: 4px solid #2ea043;
+        color: #a5f3a5;  /* Brighter green text */
+        font-weight: 500;
     }
+    
     .confidence-medium {
-        background-color: #fff3cd;
-        border-left: 4px solid #ffc107;
+        background-color: #4d3800;  /* Darker yellow background */
+        border-left: 4px solid #d29922;
+        color: #ffdf6b;  /* Brighter yellow text */
+        font-weight: 500;
     }
+    
     .confidence-low {
-        background-color: #f8d7da;
-        border-left: 4px solid #dc3545;
+        background-color: #4c1f1f;  /* Darker red background */
+        border-left: 4px solid #f85149;
+        color: #ffa198;  /* Brighter red text */
+        font-weight: 500;
     }
+    
+    /* ===== METRIC CARDS - Better Contrast ===== */
     .metric-card {
-        background-color: #f8f9fa;
+        background-color: #21262d;
         padding: 1rem;
         border-radius: 0.5rem;
         text-align: center;
+        border: 1px solid #30363d;
     }
+    
+    /* ===== EXPANDERS - More Visible ===== */
+    .streamlit-expanderHeader {
+        background-color: #21262d !important;
+        border: 1px solid #444c56 !important;
+        color: #e6edf3 !important;
+        font-weight: 500 !important;
+    }
+    
+    .streamlit-expanderHeader:hover {
+        background-color: #30363d !important;
+        border-color: #58a6ff !important;
+    }
+    
+    /* ===== TEXT INPUTS - Better Visibility ===== */
+    .stTextInput > div > div > input,
+    .stTextArea > div > div > textarea {
+        background-color: #161b22;
+        color: #e6edf3;
+        border: 1px solid #444c56;
+        font-size: 1rem;
+    }
+    
+    .stTextInput > div > div > input:focus,
+    .stTextArea > div > div > textarea:focus {
+        border-color: #58a6ff;
+        box-shadow: 0 0 0 1px #58a6ff;
+    }
+    
+    /* ===== BUTTONS - High Contrast ===== */
+    .stButton > button {
+        background-color: #238636;
+        color: #ffffff;
+        border: 1px solid #2ea043;
+        font-weight: 500;
+        font-size: 1rem;
+    }
+    
+    .stButton > button:hover {
+        background-color: #2ea043;
+        border: 1px solid #3fb950;
+        box-shadow: 0 0 10px rgba(46, 160, 67, 0.4);
+    }
+    
+    .stButton > button[kind="primary"] {
+        background-color: #1f6feb;
+        border-color: #58a6ff;
+    }
+    
+    .stButton > button[kind="primary"]:hover {
+        background-color: #58a6ff;
+        box-shadow: 0 0 10px rgba(88, 166, 255, 0.4);
+    }
+    
+    /* ===== SIDEBAR - Better Contrast ===== */
+    section[data-testid="stSidebar"] {
+        background-color: #0d1117;
+        border-right: 1px solid #30363d;
+    }
+    
+    section[data-testid="stSidebar"] .stMarkdown {
+        color: #e6edf3;
+    }
+    
+    section[data-testid="stSidebar"] h2,
+    section[data-testid="stSidebar"] h3 {
+        color: #ffffff;
+    }
+    
+    /* ===== ALERT BOXES - High Visibility ===== */
+    .stAlert {
+        background-color: #21262d;
+        border: 1px solid #444c56;
+        color: #e6edf3;
+    }
+    
+    .stSuccess {
+        background-color: #1a472a;
+        border-left: 4px solid #2ea043;
+        color: #a5f3a5;
+    }
+    
+    .stWarning {
+        background-color: #4d3800;
+        border-left: 4px solid #d29922;
+        color: #ffdf6b;
+    }
+    
+    .stError {
+        background-color: #4c1f1f;
+        border-left: 4px solid #f85149;
+        color: #ffa198;
+    }
+    
+    .stInfo {
+        background-color: #1c2d41;
+        border-left: 4px solid #58a6ff;
+        color: #79c0ff;
+    }
+    
+    /* ===== MARKDOWN CONTENT - Better Readability ===== */
+    .stMarkdown {
+        color: #e6edf3;
+    }
+    
+    .stMarkdown h1,
+    .stMarkdown h2,
+    .stMarkdown h3 {
+        color: #ffffff;
+        font-weight: 600;
+    }
+    
+    .stMarkdown p {
+        color: #e6edf3;
+        line-height: 1.6;
+    }
+    
+    .stMarkdown strong {
+        color: #ffffff;
+        font-weight: 600;
+    }
+    
+    /* ===== LINKS - Bright and Visible ===== */
+    a {
+        color: #58a6ff !important;
+        text-decoration: none;
+        font-weight: 500;
+    }
+    
+    a:hover {
+        color: #79c0ff !important;
+        text-decoration: underline;
+    }
+    
+    /* ===== PROGRESS BAR ===== */
+    .stProgress > div > div > div {
+        background-color: #2ea043;
+    }
+    
+    .stProgress > div > div {
+        background-color: #21262d;
+    }
+    
+    /* ===== METRICS - High Contrast ===== */
+    [data-testid="stMetricValue"] {
+        color: #58a6ff;
+        font-size: 2rem;
+        font-weight: 600;
+    }
+    
+    [data-testid="stMetricLabel"] {
+        color: #c9d1d9;
+        font-size: 1rem;
+        font-weight: 500;
+    }
+    
+    [data-testid="stMetricDelta"] {
+        color: #2ea043;
+    }
+    
+    /* ===== RADIO BUTTONS ===== */
+    .stRadio > label {
+        color: #e6edf3;
+        font-weight: 500;
+    }
+    
+    .stRadio div[role="radiogroup"] label {
+        color: #e6edf3;
+    }
+    
+    /* ===== CODE BLOCKS ===== */
+    code {
+        background-color: #161b22;
+        color: #ff7b72;
+        padding: 2px 6px;
+        border-radius: 3px;
+        border: 1px solid #30363d;
+        font-size: 0.9em;
+    }
+    
+    pre {
+        background-color: #161b22;
+        border: 1px solid #30363d;
+        border-radius: 6px;
+        padding: 1rem;
+    }
+    
+    /* ===== TABLES ===== */
+    table {
+        color: #e6edf3;
+        border-color: #30363d;
+    }
+    
+    thead tr {
+        background-color: #161b22;
+    }
+    
+    tbody tr:hover {
+        background-color: #21262d;
+    }
+    
+    /* ===== DIVIDERS ===== */
+    hr {
+        border-color: #30363d;
+    }
+    
+    /* ===== SCROLLBAR ===== */
+    ::-webkit-scrollbar {
+        width: 12px;
+        height: 12px;
+    }
+    
+    ::-webkit-scrollbar-track {
+        background: #0d1117;
+    }
+    
+    ::-webkit-scrollbar-thumb {
+        background: #30363d;
+        border-radius: 6px;
+        border: 2px solid #0d1117;
+    }
+    
+    ::-webkit-scrollbar-thumb:hover {
+        background: #484f58;
+    }
+    
+    /* ===== CAPTIONS ===== */
+    .caption {
+        color: #8b949e;
+        font-size: 0.9rem;
+    }
+    
+    /* ===== SELECTBOX & MULTISELECT ===== */
+    .stSelectbox > div > div,
+    .stMultiSelect > div > div {
+        background-color: #161b22;
+        color: #e6edf3;
+        border: 1px solid #444c56;
+    }
+    
+    /* ===== NUMBER INPUT ===== */
+    .stNumberInput > div > div > input {
+        background-color: #161b22;
+        color: #e6edf3;
+        border: 1px solid #444c56;
+    }
+    
+    /* ===== DATE INPUT ===== */
+    .stDateInput > div > div > input {
+        background-color: #161b22;
+        color: #e6edf3;
+        border: 1px solid #444c56;
+    }
+    
+    /* ===== FILE UPLOADER ===== */
+    .stFileUploader {
+        background-color: #161b22;
+        border: 1px dashed #444c56;
+    }
+    
+    /* ===== TABS ===== */
+    .stTabs [data-baseweb="tab-list"] {
+        background-color: #161b22;
+        border-bottom: 1px solid #30363d;
+    }
+    
+    .stTabs [data-baseweb="tab"] {
+        color: #8b949e;
+    }
+    
+    .stTabs [aria-selected="true"] {
+        color: #58a6ff;
+        border-bottom-color: #58a6ff;
+    }
+    
+    /* ===== SPINNER ===== */
+    .stSpinner > div {
+        border-top-color: #58a6ff;
+    }
+    
+    /* ===== CUSTOM CLASSES ===== */
+    
+    /* Source badges */
+    .source-badge-high {
+        background-color: #1a472a;
+        color: #a5f3a5;
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-size: 0.85rem;
+        font-weight: 500;
+    }
+    
+    .source-badge-medium {
+        background-color: #4d3800;
+        color: #ffdf6b;
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-size: 0.85rem;
+        font-weight: 500;
+    }
+    
+    .source-badge-low {
+        background-color: #4c1f1f;
+        color: #ffa198;
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-size: 0.85rem;
+        font-weight: 500;
+    }
+    
+    /* Make sure all text is readable */
+    * {
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+    
+    /* Improve text contrast */
+    p, span, div, label {
+        color: #e6edf3;
+    }
+    
+    /* Headers in content */
+    h1 { color: #ffffff; font-weight: 600; }
+    h2 { color: #ffffff; font-weight: 600; }
+    h3 { color: #ffffff; font-weight: 600; }
+    h4 { color: #e6edf3; font-weight: 600; }
+    h5 { color: #e6edf3; font-weight: 500; }
+    h6 { color: #c9d1d9; font-weight: 500; }
 </style>
 """, unsafe_allow_html=True)
 
@@ -322,8 +676,27 @@ def display_report(report: dict):
             st.info(note)
     
     # Metadata
-    with st.expander("📈 Analysis Metadata"):
-        st.json(report["metadata"])
+    with st.expander("📈 Analysis Metadata", expanded=True):
+        metadata = report.get("metadata", {})
+        
+        # Display in readable format
+        col1, col2, col3 = st.columns(3)
+        
+        with col1:
+            st.metric("Total Sources", metadata.get("total_sources", 0))
+            st.metric("Trusted Sources", metadata.get("trusted_sources", 0))
+        
+        with col2:
+            st.metric("Analysis Depth", metadata.get("analysis_depth", "N/A"))
+            st.caption("Based on content volume")
+        
+        with col3:
+            if "sources_analyzed" in metadata:
+                st.caption("**Sources Analyzed:**")
+                for idx, url in enumerate(metadata["sources_analyzed"][:5], 1):
+                    # Shorten URL for display
+                    display_url = url[:50] + "..." if len(url) > 50 else url
+                    st.caption(f"{idx}. {display_url}")
 
 def main():
     """Main application function"""

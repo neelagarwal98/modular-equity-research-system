@@ -5,7 +5,7 @@ load_dotenv()
 
 # API Keys
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
-SERPAPI_KEY = os.getenv("SERPAPI_KEY", "")  
+SERPER_API_KEY = os.getenv("SERPER_API_KEY", "") 
 
 # Model Configuration
 LLM_MODEL = "gpt-3.5-turbo"  
@@ -39,9 +39,17 @@ PRIORITY_DOMAINS = [
     "fool.com",
     "seekingalpha.com",
     "yahoo.com/finance",
-    "benzinga.com"
+    "benzinga.com",
+    "investing.com",
+    "barrons.com",
+    "forbes.com/investing",
+    "morningstar.com"
 ]
 
 # Research Parameters
 ENABLE_WEB_SEARCH = True
 MAX_SEARCH_RESULTS = 10
+
+USE_SERP_API = bool(SERPER_API_KEY)
+SERP_SEARCH_LIMIT = 7
+SERP_RESULTS_PER_QUERY = 3
