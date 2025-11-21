@@ -11,7 +11,7 @@
 
 ## 🎯 Overview
 
-The **Modular Equity Research System** is a prototype application that automates financial equity research using a coordinated multi-module architecture. It combines the power of OpenAI's GPT-3.5-turbo, Google SERP API, and RAG (Retrieval-Augmented Generation) to deliver accurate, well-sourced financial analysis reports with confidence scoring.
+The **Modular Equity Research System** is a prototype application that automates financial equity research using a coordinated multi-module architecture. It combines the power of OpenAI's GPT-3.5-turbo, Google SERPER API, and RAG (Retrieval-Augmented Generation) to deliver accurate, well-sourced financial analysis reports with confidence scoring.
 
 ### Key Features
 
