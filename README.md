@@ -16,7 +16,7 @@ The **Modular Equity Research System** is a prototype application that automates
 ### Key Features
 
 - **🔍 Intelligent Query Analysis**: Automatically extracts company information, research intent, and relevant topics from natural language queries
-- **🌐 Dynamic Source Discovery**: Uses Google SERP API to find the most relevant, up-to-date financial articles and reports
+- **🌐 Dynamic Source Discovery**: Uses SERPER API to find the most relevant, up-to-date financial articles and reports
 - **✅ Automated Validation**: Evaluates source credibility and calculates confidence scores for research findings
 - **📝 RAG-Powered Synthesis**: Generates comprehensive reports using vector-based semantic search and LLM synthesis
 - **📊 Real-time Activity Logging**: Transparent pipeline execution with detailed activity tracking
